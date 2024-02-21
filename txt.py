@@ -20,7 +20,7 @@ import tqdm
 number_range=list(range(1,101,1))
 sounds=['desert_wind.mp3','roar.mp3','twig.mp3','wolf.mp3','error.mp3']
 biomes=['Desert','Artic','Forest','Space']
-weapons=['sword','warhammer','shurikens','scythe','spear','katana','sword mace']
+weapons=['sword','warhammer','shurikens','scythe','spear','katana','sword mace','pistol']
 default_health=100
 circle_frames=['○',' ○','  ○','    ○','      ○','       ○','        ○','          ○','                ○','                  ○','                           ○']
 #weapon damage stats:
@@ -33,44 +33,50 @@ spear_damage=25
 player_inventory=[]
 player_attack_power=20
 colors=[Fore.RED,Fore.GREEN,Fore.BLUE,Fore.YELLOW,Fore.MAGENTA,Fore.LIGHTRED_EX,Fore.LIGHTMAGENTA_EX,Fore.BLACK,Fore.CYAN,Fore.RESET]
-weapons_ascii_art=['''        
+bullet_ascii_art=f'''
+       {colors[3]}    /\ 
+                     |  |
+                     |  |
+                     |  |
+                     |__| '''
+weapons_ascii_art=[f'''        
                  
-                      __
-                     /__\\
-                     |__|
-                     |__|
-                     |__|            
-                     |__|
+                      {colors[-3]}__
+                     {colors[-3]}/{colors[3]}__{colors[-3]}\ 
+                     {colors[-3]}|{colors[3]}__{colors[-3]}|
+                     {colors[-3]}|{colors[3]}__{colors[-3]}|
+                     {colors[-3]}|{colors[3]}__{colors[-3]}|            
+                     {colors[-3]}|{colors[3]}__{colors[-3]}|
                   ___|__|__     
-                  \._. ._./
-                   | | | |
-                   |_| |_|
-                   | | | |
-                   |.| |.|
-                   | | | |
-                   |.| |.|
-                   |_| |_|
-                   |.| |.|
-                   | | | |
-                   |.| |.| 
-                   |_| |_|
-                   |.| |.|
-                   | | | |
-                   |.| |.|
-                   |_| |_|
-                   |.| |.|
-                   | | | |
-                   | | | |
-                   |.| |.|
-                   |_| |_|
-                   | | | | 
-                   |.| |.|
-                   | | | |
-                   | | | |
-                   |.| |.|
-                   |_| |_|
-                   \ | | /
-                    \| |/''','''
+                  \{colors[0]}.{colors[-3]}_{colors[3]}. {colors[0]}.{colors[-3]}_{colors[3]}.{colors[-3]}/
+                   {colors[-3]}| | | |
+                   |{colors[3]}_{colors[-3]}| |{colors[3]}_{colors[-3]}|
+                   {colors[-3]}| | | |
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   {colors[-3]}| | | |
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   |{colors[3]}_{colors[-3]}| |{colors[3]}_{colors[-3]}|
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   {colors[-3]}| | | |
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}| 
+                   |{colors[3]}_{colors[-3]}| |{colors[3]}_{colors[-3]}|
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   {colors[-3]}| | | |
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   |{colors[3]}_{colors[-3]}| |{colors[3]}_{colors[-3]}|
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   {colors[-3]}| | | |
+                   {colors[-3]}| | | |
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   |{colors[3]}_{colors[-3]}| |{colors[3]}_{colors[-3]}|
+                   {colors[-3]}| | | | 
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   {colors[-3]}| | | |
+                   {colors[-3]}| | | |
+                   |{colors[0]}.{colors[-3]}| |{colors[0]}.{colors[-3]}|
+                   {colors[-3]}|{colors[3]}_{colors[-3]}| {colors[-3]}|{colors[3]}_{colors[-3]}|
+                   {colors[-3]}\ | | /
+                   {colors[-3]} \| |/''','''
                ___________________________________________
               /____________________________________/  ____ \\
               |____________________________________| |    ||
@@ -92,43 +98,43 @@ weapons_ascii_art=['''
                              |___|___|
                              |___|___|
                              |___|___|
-                             |___|__/''','''
-                                                             ____ 
-                                                            (_<>_)
-                                                            |_<>_|
-                                                            |_<>_|
-                                                            |_<>_|
-                                                            |_<>_|
-                                                            |_<>_|
-                                                            |_<>_|
-                                                          __|_<>_|__
-                                                         /  |_<>_|  \\
+                             |___|__/''',f'''
+                                                             {colors[3]}____ 
+                                                            {colors[3]}({colors[1]}_<>_{colors[3]})
+                                                            {colors[3]}|{colors[1]}_<>_{colors[3]}|
+                                                            {colors[3]}|{colors[1]}_<>_{colors[3]}|
+                                                            {colors[3]}|{colors[1]}_<>_{colors[3]}|
+                                                            {colors[3]}|{colors[1]}_<>_{colors[3]}|
+                                                            {colors[3]}|{colors[1]}_<>_{colors[3]}|
+                                                            {colors[3]}|{colors[1]}_<>_{colors[3]}|
+                                                          __{colors[3]}|{colors[1]}_<>_{colors[3]}|__
+                                                         /  {colors[3]}|{colors[1]}_<>_{colors[3]}|  \\
                                                         |\__________/|
                                                          \__________/
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |    
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            | || |
-                                                            |   -|
-                                                            |   -|
-                                                            |   -|
-                                                            |    /
-                                                            | ○ /
-                                                            |__/
-                                                           
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|    
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}| {colors[-1]}|| {colors[3]}|
+                                                            {colors[3]}|   {colors[1]}-{colors[3]}|
+                                                            {colors[3]}|   {colors[1]}-{colors[3]}|
+                                                            {colors[3]}|   {colors[1]}-{colors[3]}|
+                                                            {colors[3]}|    {colors[3]}/
+                                                            {colors[3]}| {colors[1]}○ {colors[3]}/
+                                                            {colors[3]}|__/
+                                                          
                                                            ''','''
                                                            
                                          ____ _____ __ __________________________      
@@ -159,7 +165,8 @@ weapons_ascii_art=['''
                                                    |   |
                                                    |   |
                                                    |   |
-                                                   |__/   ''',''' 
+                                                   |__/   ''',f''' 
+                                                       {colors[0]} 
                                                                     __
                                                                    |  |
                                                                    |  |
@@ -187,101 +194,124 @@ weapons_ascii_art=['''
                                                                    |  |
                                                                    |  |
                                                                  __|  |__
-                                                                /  _____  \\
+                                                                /  _____  \ 
                                                                 | |     | |
                                                                 | |     | |
                                                                 | |     | |
                                                                 | |     | |
                                                                 | |     | |
-                                                                 \|     |/''','''
-                                                                                   /|\\
-                                                                                  //|\\\ 
-                                                                                 //_|_\\\\ 
-                                                                                //__|__\\\ 
-                                                                               //___|___\\\ 
-                                                                              //____|____\\\ 
-                                                                             //_____|_____\\\ 
-                                                                            //______|______\\\ 
-                                                                           //_______|______ \\\ 
-                                                                           \ **************  /
-                                                                            *______________ *     
-                                                                           *\______________/ * 
-                                                                            *\____________/ *
-                                                                             **************
-                                                                           / \_____|_____/\\
-                                                                           \ \_____|_____/ /
-                                                                            \ \____|____/ /
-                                                                             \ \___|___/ /
-                                                                              \ \__|__/ /
-                                                                               \ \_|_/ /
-                                                                                \ \|/ /
-                                                                                 \ | /
-                                                                                  \|/''','''
-                                                                                             ________  
-                                                                                            / /    \ \  
-                                                                                           / / ____ \ \  
-                                                                                          / / /    \ \ \  
-                                                                                          | | |_   | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | |_|  | | |
-                                                                                          | | |    | | |
-                                                                                          | | | |  | | | 
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | |    | | |
-                                                                                          | | |  /|| | |
-                                                                                          | | |  \|| | |
-                                                                                          | | |    | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | |
-                                                                                          | | |    | | | 
-                                                                                          | | |    | | |
-                                                                                          | | |    | | |
-                                                                                          | | |_   | | |
-                                                                                          | | | |  | | |
-                                                                                          | | | |  | | | 
-                                                                                          | | |_|  | | |
-                                                                                         /||| |    ||||\  
-                                                                                         |||| |    |||||
-                                                                                         |||| |    ||||| 
-                                                                                         \|\| |    ||/|/
-                                                                                           \  \    /  /
-                                                                                          / /\_\__/_/\ \  
-                                                                                         | |_|  || |_| |
-                                                                                         \_\_| -||-|_/_/
-                                                                                             |__\/_|
-                                                                                              |___| 
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |___|                         
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |___|
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |___|
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |   |
-                                                                                              |___|
-                                                                                              |   |
-                                                                                             _/___\_
-                                                                                           || |   | ||
-                                                                                           ||_|___|_||
-                                                                                              \___/
-                                       ''']
+                                                                 \|     |/''',f'''                                                                
+                                                                                __ __ _
+                                                                               <       |   
+                                                                                |      |
+                                                                                |      |
+                                                                                |      |
+                                                                                |      |
+                                                                                |      |
+                                                                                /      | 
+                                                                              |__________|
+                                                 _________________________ __ /\________/\ __ _______________________/\ 
+                                                 |                        |  |____________|  |                        |        
+                                                 | ______________________ |  |____________|  | _______________________|
+                                                 \/                      \|__|____________|__|/                        
+                                                                              \/_________\/        
+                                                                               |_________|    
+                                                                                 \      |   
+                                                                                  |     |
+                                                                                  |     |
+                                                                                  |     |
+                                                                                  |     |  
+                                                                                  |     |
+                                                                                  |     |
+                                                                                  |     |
+                                                                                  |_____>
+                                                                               ''',f'''
+                                                                                             {colors[-3]}_{colors[5]}_{colors[2]}_{colors[-3]}_{colors[5]}_{colors[2]}_{colors[-3]}_{colors[5]}_  
+                                                                                            {colors[2]}/ /    \ \  
+                                                                                           {colors[5]}/ /{colors[-2]} ____ {colors[5]}\ \  
+                                                                                          {colors[-3]}/ / {colors[-2]}/    \ {colors[-3]}\ \  
+                                                                                          {colors[2]}| | {colors[-2]}|_   | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}| |  | {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}| |  |{colors[-3]} | |
+                                                                                          {colors[2]}| | {colors[-2]}|_|  | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}|    | {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}| {colors[-2]}|  | {colors[-3]}| | 
+                                                                                          {colors[2]}| | {colors[-2]}| {colors[-2]}|  | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}| {colors[-2]}|  | {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}| {colors[-2]}|  | {colors[-3]}| |
+                                                                                          {colors[2]}| | {colors[-2]}| {colors[-2]}|  | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}| {colors[-2]}|  | {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}| {colors[-2]}|  | {colors[-3]}| |
+                                                                                          {colors[2]}| | {colors[-2]}|    | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}|  {colors[-2]}/|| {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}|  {colors[-2]}\|| {colors[-3]}| |
+                                                                                          {colors[2]}| | {colors[-2]}|    | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}| {colors[-2]}|  | {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}| {colors[-2]}|  | {colors[-3]}| |
+                                                                                          {colors[2]}| | {colors[-2]}| {colors[-2]}|  | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}| {colors[-2]}|  | {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}| {colors[-2]}|  |{colors[-3]} | |
+                                                                                          {colors[2]}| | {colors[-2]}| {colors[-2]}|  | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}|    | {colors[5]}| | 
+                                                                                          {colors[-3]}| | {colors[-2]}|    | {colors[-3]}| |
+                                                                                          {colors[2]}| | {colors[-2]}|    | {colors[2]}| |
+                                                                                          {colors[5]}| | {colors[-2]}|{colors[-2]}_   | {colors[5]}| |
+                                                                                          {colors[-3]}| | {colors[-2]}| {colors[-2]}|  | {colors[-3]}| |          
+                                                                                          {colors[2]}| | {colors[-2]}| {colors[-2]}|  | {colors[2]}| | 
+                                                                                          {colors[5]}| | {colors[-2]}|{colors[-2]}_|  | {colors[5]}| |
+                                                                                         {colors[-2]}/||| |    {colors[-2]}||||\  
+                                                                                         {colors[-2]}|||| |    {colors[-2]}|||||
+                                                                                         {colors[-2]}|||| |    {colors[-2]}||||| 
+                                                                                         {colors[-2]}\|\| |    {colors[-2]}||/|/
+                                                                                           {colors[-3]}\  \    /  /
+                                                                                         {colors[-3]} / /\_\__/_/\ \  
+                                                                                         {colors[-3]}| |_|  {colors[-2]}|| {colors[-3]}|_| |
+                                                                                         {colors[-3]}\{colors[5]}_{colors[-3]}\_| {colors[5]}-{colors[-2]}||{colors[5]}-{colors[-3]}|_/{colors[2]}_{colors[-3]}/
+                                                                                             |{colors[-3]}__{colors[-2]}\/{colors[-3]}_|
+                                                                                              {colors[2]}|{colors[-2]}___{colors[2]}| 
+                                                                                              {colors[5]}|   {colors[5]}|
+                                                                                              {colors[-3]}|   {colors[-3]}|
+                                                                                              {colors[2]}|   {colors[2]}|
+                                                                                              {colors[5]}|{colors[-2]}___{colors[5]}|                         
+                                                                                              {colors[-3]}|   {colors[-3]}|
+                                                                                              {colors[2]}|   {colors[2]}|
+                                                                                              {colors[5]}|   {colors[5]}|
+                                                                                              {colors[-3]}|{colors[-2]}___{colors[-3]}|
+                                                                                              {colors[2]}|   |
+                                                                                              {colors[5]}|   |
+                                                                                              {colors[-3]}|   |
+                                                                                              {colors[2]}|{colors[-2]}___{colors[2]}|
+                                                                                              {colors[5]}|   |
+                                                                                              {colors[-3]}|   |
+                                                                                              {colors[2]}|   |
+                                                                                              {colors[5]}|{colors[-2]}___{colors[5]}|
+                                                                                              {colors[-3]}|   |
+                                                                                             {colors[-3]}_{colors[5]}/{colors[5]}_{colors[-3]}_{colors[2]}_{colors[2]}\{colors[-3]}_
+                                                                                           {colors[5]}|| |   {colors[2]}| ||
+                                                                                           {colors[5]}||{colors[-3]}_{colors[5]}|{colors[-2]}___{colors[2]}|{colors[-3]}_{colors[2]}||
+                                                                                              {colors[5]}\{colors[5]}_{colors[-3]}_{colors[2]}_/
+                                       '''
+                                        ,'''
+                                                              _____________________________________________________________
+                                                             /           _____________________________________          \  \ 
+                                                            /           |                                     |          \  \ 
+                                                            |           |                                     |          |  |
+                                                            |           |                                     |          |  | 
+                                                            |           |                                     |          |  |
+                                                            |           |                                     |          |  |
+                                                            |___________|_____________________________________|_________/__/
+                                                            |             |  |       /  /  /
+                                                            |             |  |      /  /  /
+                                                            |             |  |     /  /  /
+                                                            |             |  |____/  /  /
+                                                            |             |  |______/__/ 
+                                                            |             |  | 
+                                                            |             |  |
+                                                            |             |  |
+                                                            |             |  |
+                                                            \             |  |
+                                                             \____________|__|
+                                  ''']
 #Creating a function that generates options for the user to select 
 def generate_options(number_of_options,option1=None,option2=None,option3=None,option4=None,option5=None,option6=None,option7=None,option8=None,option9=None):
     count=0 
@@ -483,8 +513,7 @@ else:
                     time.sleep(1)
                     loop_over(sequence=f'Weapons:\n\t',color=colors[-3],delay_time=0.1)
                     time.sleep(1)
-                    weapons=['sword','warhammer','shurikens','scythe','spear','katana','sword mace']
-                    generate_options(number_of_options=7,option1=f'{weapons[0]} {weapons_ascii_art[0]}',option2=f'{weapons[1]}{weapons_ascii_art[1]}',option3=f'{weapons[2]} {weapons_ascii_art[5]}',option4=f'{weapons[3]} {weapons_ascii_art[3]}',option5=f'{weapons[4]} {weapons_ascii_art[4]}',option6=f'{weapons[-1]} {weapons_ascii_art[-1]}',option7=f'{weapons[-2]} {weapons_ascii_art[2]}')
+                    generate_options(number_of_options=8,option1=f'{weapons[0]} {weapons_ascii_art[0]}',option2=f'{weapons[1]} {weapons_ascii_art[1]}',option3=f'{weapons[2]} {weapons_ascii_art[5]}',option4=f'{weapons[3]}  {weapons_ascii_art[3]}',option5=f'{weapons[4]} {weapons_ascii_art[4]}',option6=f'{weapons[5]} {weapons_ascii_art[2]}',option7=f'{weapons[6]} {weapons_ascii_art[6]}',option8=f'{weapons[7]} {weapons_ascii_art[7]}')
                     time.sleep(1)
                     choose_weapon=input(f'{colors[-3]}choose weapon:')
                     while choose_weapon not in weapons:
